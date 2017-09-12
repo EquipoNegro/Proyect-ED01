@@ -59,17 +59,28 @@ public class ProyectED01 {
         //Fills up the list of rooms with the predefined arrays.
         cinemex.setRooms(rooms);
         //MENU loops for as long as the user wants to use the program
-        boolean flag = true;
+        boolean flag = true; //Uses this flag to determine wether the user wants to keep going or stop the program.
+        boolean intFlag = false;
         do
         {
             Scanner reader = new Scanner(System.in);  // Reading from System.in
+            //Printing options
             System.out.println("------------- Welcome to Cinemex's ticket office -------------");
             System.out.println("Please select an option:");
             System.out.println("1) Get the tickets bought to a specific movie");
             System.out.println("2) Get the movies displayed in a specific room");
             System.out.println("3) Get the most watched movie - room combination");
             System.out.println("4) Get the most watched movie cinema-wide");
-            int n = reader.nextInt(); reader.nextLine();
+            int n=0;
+            try
+            {
+                n = reader.nextInt(); reader.nextLine();
+            }
+            catch(Exception e)
+            {
+                System.out.println("Only numbers are valid! Please enter a number.");
+            }
+            //options...
             switch (n)
             {
                 case 1:
@@ -97,7 +108,7 @@ public class ProyectED01 {
                     break;
             }        
         }
-        while(flag==true);
+        while(flag==true); 
     }
     public static boolean MovieMenu(String movie, Movie[]catalog)
     {
