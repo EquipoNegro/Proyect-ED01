@@ -19,6 +19,11 @@ public class Movie
     {
         this.name= name;
     }
+    public Movie(String name, int attendance)
+    {
+        this.name= name;
+        this.attendance=attendance;
+    }
     public int getAttendance() 
     {
         return attendance;

@@ -14,88 +14,66 @@ import java.util.*;
 public class Room 
 {
     private String code;
-    private ArrayList <Movie> movies;
+    public Movie[] movies;
 
     public Room(String code) 
     {
         this.code = code;
-        movies = new ArrayList<>();
+        this.movies = new Movie[15];
     }
 
     public String getCode() 
     {
         return code;
     }
-    public ArrayList <Movie> getMovies()
+    public Movie[] getMovies()
     {
         return movies;
     }
     public Movie getMovie(int index)
     {
-        return movies.get(index);
+        return movies[index];
     }
     public void setCode(String code) 
     {
         this.code = code;
     }
     
-    public int playMovie(Movie mov)
+    public Movie[] playMovies(Movie [] catalog)
     {
+        for(int i=0;i<catalog.length;i++)
+        {
+            this.movies[i] = new Movie(catalog[i].getName());
+        }
         Random r = new Random();
         int Low = 10;
         int High = 100;
-        int Result = r.nextInt(High-Low) + Low;
-        Movie dummy = new Movie(mov.getName());
-        dummy.setAttendance(Result);
-        System.out.println("The movie "+dummy.getName()+" was played at the room: "+this.code+" with "+dummy.getAttendance()+" tickets bought");
-        movies.add(dummy);
-        sort(0,movies.size()-1);
-        return Result;
-    }
-    public void sort(int start, int end)
-    {
-        int left = start +1;
-        int right =  end;
-        int pivot = start;
-        int pivotV=this.movies.get(start).getAttendance();
-        while(left <= right) //while the start and end don't cross
+        for(int i=0;i<catalog.length;i++)
         {
-            //Moves throughout the vector comparing the values with the pivot, moving one by one, forwards or backwards
-            while(left <= end && pivotV >=movies.get(left).getAttendance())
+            int Result = r.nextInt(High-Low) + Low;
+            this.movies[i].setAttendance(Result);
+            catalog[i].addTotalViews(Result);
+        }
+        return catalog;
+    }
+    public String getMostWatchedMovie()
+    {
+        int tmp=0;
+        for(int i = 0; i<movies.length;i++)
+        {
+            if(movies[i].getAttendance()>tmp)
             {
-                left++;
-            }
-            while(right > start && pivotV < movies.get(right).getAttendance())
-            {
-                right--;
-            }
-            if(left < right)
-            {
-                swap(left,right); //Uses the swap function to exchange the values
-                left++;right--;
+                tmp = movies[i].getAttendance();
             }
         }
-        swap(pivot, left-1);
-        //Uses recursivity to sort all of the values set by set
-        if(start<right-1)
+        for(int i = 0; i<movies.length;i++)
         {
-            sort(start, right-1);
+            if(movies[i].getAttendance()==tmp)
+            {
+                return"The most watched movie ("+this.movies[i].getName()+ ") in the room "+this.code+" had "+
+                        movies[i].getAttendance()+" attendants";
+            }
         }
-        if(left < end)
-        {
-            sort(right+1, end);
-        }
+        return "There are no movies being played right now";
     }
-    public void swap(int p1, int p2) //function used to switch two values in this class's array.
-    {
-        Movie tmp=movies.get(p1);
-        movies.set(p1,movies.get(p2));
-        movies.set(p2,tmp);
-
-    }
-    public Movie getMostWatchedMovie()
-    {
-        return movies.get(movies.size()-1);
-    }
-    
 }
